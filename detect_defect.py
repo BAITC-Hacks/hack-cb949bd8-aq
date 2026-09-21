@@ -21,7 +21,8 @@ def red_ratio(image_path: Path, min_saturation: int = 80, min_value: int = 60) -
     HSV is used because hue separates red from brightness. Red wraps around the
     hue scale in OpenCV, so both ends of the scale must be included.
     """
-    image = cv2.imread(str(image_path))
+    # imdecode keeps Windows Unicode paths intact (cv2.imread may not).
+    image = cv2.imdecode(np.fromfile(image_path, dtype=np.uint8), cv2.IMREAD_COLOR)
     if image is None:
         raise ValueError(f"Could not read image: {image_path}")
 
